@@ -16,6 +16,7 @@
 
 package com.android.grafika.gles;
 
+import android.content.Context;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.util.Log;
@@ -131,11 +132,14 @@ public class Texture2dProgram {
     private float[] mTexOffset;
     private float mColorAdjust;
 
+    public Texture2dProgram(ProgramType programType) {
+        this(null, programType);
+    }
 
     /**
      * Prepares the program in the current EGL context.
      */
-    public Texture2dProgram(ProgramType programType) {
+    public Texture2dProgram(Context context, ProgramType programType) {
         mProgramType = programType;
 
         switch (programType) {
@@ -145,7 +149,8 @@ public class Texture2dProgram {
                 break;
             case TEXTURE_EXT:
                 mTextureTarget = GLES11Ext.GL_TEXTURE_EXTERNAL_OES;
-                mProgramHandle = GlUtil.createProgram(VERTEX_SHADER, FRAGMENT_SHADER_EXT);
+                String frag = GlUtil.loadAsset(context, "glfs_camera_preview.glsl");
+                mProgramHandle = GlUtil.createProgram(VERTEX_SHADER, frag /*FRAGMENT_SHADER_EXT*/);
                 break;
             case TEXTURE_EXT_BW:
                 mTextureTarget = GLES11Ext.GL_TEXTURE_EXTERNAL_OES;

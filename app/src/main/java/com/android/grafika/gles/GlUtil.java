@@ -16,14 +16,19 @@
 
 package com.android.grafika.gles;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Some OpenGL utility functions.
@@ -191,5 +196,49 @@ public class GlUtil {
                 Log.i(TAG, "iversion: " + majorVersion + "." + minorVersion);
             }
         }
+    }
+
+    /**
+     * Loads a file from the assets folder.
+     *
+     * @param context The {@link Context}.
+     * @param assetPath The path to the file to load, from the assets folder.
+     * @return The content of the file to load.
+     */
+    public static String loadAsset(Context context, String assetPath) {
+        try (InputStream inputStream = context.getAssets().open(assetPath)) {
+            return fromUtf8Bytes(toByteArray(inputStream));
+        } catch (IOException e) {
+            Log.e(TAG, "failed to load asset from " + assetPath, e);
+        }
+        return "";
+    }
+
+    /**
+     * Returns a new {@link String} constructed by decoding UTF-8 encoded bytes.
+     *
+     * @param bytes The UTF-8 encoded bytes to decode.
+     * @return The string.
+     */
+    private static String fromUtf8Bytes(byte[] bytes) {
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Converts the entirety of an {@link InputStream} to a byte array.
+     *
+     * @param inputStream the {@link InputStream} to be read. The input stream is not closed by this
+     *     method.
+     * @return a byte array containing all of the inputStream's bytes.
+     * @throws IOException if an error occurs reading from the stream.
+     */
+    private static byte[] toByteArray(InputStream inputStream) throws IOException {
+        byte[] buffer = new byte[1024 * 4];
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+        return outputStream.toByteArray();
     }
 }

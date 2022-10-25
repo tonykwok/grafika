@@ -14,38 +14,19 @@
      limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@android:color/black"
     tools:context=".PlayMovieSurfaceActivity" >
-
-    <Button
-        android:id="@+id/play_stop_button"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/play_button_text"
-        android:onClick="clickPlayStop" />
-
-    <Spinner
-        android:id="@+id/playMovieFile_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/play_stop_button"
-        android:layout_toRightOf="@id/play_stop_button" />
 
     <com.android.grafika.AspectFrameLayout
         android:id="@+id/playMovie_afl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/play_stop_button"
-        android:layout_centerInParent="true" >
+        android:layout_gravity="center"
+        android:onClick="clickPlayStop">
 
         <SurfaceView
             android:id="@+id/playMovie_surface"
@@ -55,4 +36,23 @@
 
     </com.android.grafika.AspectFrameLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/play_stop_controls"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/play_stop_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clickPlayStop"
+            android:text="@string/play_button_text" />
+
+        <Spinner
+            android:id="@+id/playMovieFile_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</FrameLayout>

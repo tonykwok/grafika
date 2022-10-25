@@ -221,6 +221,9 @@ public final class EglCore {
         EGL14.eglDestroySurface(mEGLDisplay, eglSurface);
     }
 
+    // https://www.khronos.org/registry/EGL/extensions/KHR/EGL_KHR_gl_colorspace.txt
+    public static final int EGL_GL_COLORSPACE_KHR = 0x309D;
+
     /**
      * Creates an EGL surface associated with a Surface.
      * <p>
@@ -233,6 +236,8 @@ public final class EglCore {
 
         // Create a window surface, and attach it to the Surface we received.
         int[] surfaceAttribs = {
+                EGL_GL_COLORSPACE_KHR,
+                ColorSpace.EGL_GL_COLORSPACE_DISPLAY_P3_EXT,
                 EGL14.EGL_NONE
         };
         EGLSurface eglSurface = EGL14.eglCreateWindowSurface(mEGLDisplay, mEGLConfig, surface,
